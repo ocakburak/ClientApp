@@ -1,31 +1,47 @@
 <div class="container" style="margin-top: 100px;">
     <div class="row">
         <div class="col-6">
-            <form (ngSubmit)="register()">
+            <form #form="ngForm" (ngSubmit)="register()">
                 <h2>Register</h2>
                 <hr>
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="model.name" name="name" class="form-control" placeholder="Name">
+                    <input required minlength="5" #name="ngModel" maxlength="25" type="text" [(ngModel)]="model.name" name="name" class="form-control" placeholder="Name">
+                    <div class="alert alert-danger" *ngIf="name.invalid && name.touched">
+                        <p *ngIf="name.errors?.['required']">Name is required</p>
+                        <p *ngIf="name.errors?.['minlength']">Minimum 5 characters</p>
+                    </div>
                 </div>
                 <br>
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="model.username" name="username" class="form-control" placeholder="Username">
+                    <input #username="ngModel" required minlength="8" type="text" [(ngModel)]="model.username" name="username" class="form-control" placeholder="Username">
+                    <div class="alert alert-danger" *ngIf="username.invalid && username.touched">
+                        <p *ngIf="username.errors?.['required']">Username is required</p>
+                        <p *ngIf="username.errors?.['minlength']">Minimum 8 characters</p>
+                    </div>
                 </div>
                 <br>
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="model.gender" name="gender" class="form-control" placeholder="Gender">
+                    <input required type="text" [(ngModel)]="model.gender" name="gender" class="form-control" placeholder="Gender">
                 </div>
                 <br>
                 <div class="form-group">
-                    <input type="email" [(ngModel)]="model.email" name="email" class="form-control" placeholder="Email">
+                    <input #email="ngModel" required email type="email" [(ngModel)]="model.email" name="email" class="form-control" placeholder="Email">
+                    <div class="alert alert-danger" *ngIf="email.invalid && email.touched">
+                        <p *ngIf="email.errors?.['required']">Email is required</p>
+                        <p *ngIf="email.errors?.['email']">Invalid email</p>
+                    </div>
                 </div>
                 <br>
                 <div class="form-group">
-                    <input type="password" [(ngModel)]="model.password" name="password" class="form-control" placeholder="Password">
-                    <hr>
+                    <input #password="ngModel" required minlength="6" maxlength="10" type="password" [(ngModel)]="model.password" name="password" class="form-control" placeholder="Password">
+                    <div class="alert alert-danger" *ngIf="password.invalid && password.touched">
+                        <p *ngIf="password.errors?.['required']">Password is required</p>
+                        <p *ngIf="password.errors?.['minlength']">Minimum 6 characters</p>
+                        <p *ngIf="password.errors?.['maxlength']">Maximum 10 characters</p>
+                    </div>
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <button [disabled]="form.invalid" type="submit" class="btn btn-primary btn-block">Submit</button>
             </form>
         </div>
     </div>
